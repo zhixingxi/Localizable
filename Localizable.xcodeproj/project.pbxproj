@@ -12,6 +12,8 @@
 		497CD8B322F5368F00B695E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 497CD8B122F5368F00B695E5 /* Main.storyboard */; };
 		497CD8B522F5369000B695E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 497CD8B422F5369000B695E5 /* Assets.xcassets */; };
 		497CD8B822F5369000B695E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 497CD8B622F5369000B695E5 /* LaunchScreen.storyboard */; };
+		49AB5CFF22F5376800A84EDA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 49AB5D0122F5376800A84EDA /* Localizable.strings */; };
+		49AB5D0722F53C8500A84EDA /* LocalizedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49AB5D0622F53C8500A84EDA /* LocalizedUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,11 @@
 		497CD8B422F5369000B695E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		497CD8B722F5369000B695E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		497CD8B922F5369000B695E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49AB5D0022F5376800A84EDA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		49AB5D0222F5378100A84EDA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		49AB5D0322F5378100A84EDA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		49AB5D0422F5378100A84EDA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		49AB5D0622F53C8500A84EDA /* LocalizedUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +61,10 @@
 		497CD8AC22F5368F00B695E5 /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
+				49AB5D0622F53C8500A84EDA /* LocalizedUtils.swift */,
 				497CD8AD22F5368F00B695E5 /* AppDelegate.swift */,
 				497CD8AF22F5368F00B695E5 /* ViewController.swift */,
+				49AB5D0122F5376800A84EDA /* Localizable.strings */,
 				497CD8B122F5368F00B695E5 /* Main.storyboard */,
 				497CD8B422F5369000B695E5 /* Assets.xcassets */,
 				497CD8B622F5369000B695E5 /* LaunchScreen.storyboard */,
@@ -74,6 +83,7 @@
 				497CD8A622F5368F00B695E5 /* Sources */,
 				497CD8A722F5368F00B695E5 /* Frameworks */,
 				497CD8A822F5368F00B695E5 /* Resources */,
+				49AB5D0522F53B7C00A84EDA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -106,6 +116,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 497CD8A122F5368F00B695E5;
 			productRefGroup = 497CD8AB22F5368F00B695E5 /* Products */;
@@ -123,12 +134,33 @@
 			buildActionMask = 2147483647;
 			files = (
 				497CD8B822F5369000B695E5 /* LaunchScreen.storyboard in Resources */,
+				49AB5CFF22F5376800A84EDA /* Localizable.strings in Resources */,
 				497CD8B522F5369000B695E5 /* Assets.xcassets in Resources */,
 				497CD8B322F5368F00B695E5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49AB5D0522F53B7C00A84EDA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# -*- coding: utf-8 -*\n# Localizable.strings文件路径\nlocalizableFile=\"${SRCROOT}/${PROJECT_NAME}/en.lproj/Localizable.strings\"\n#  生成的swift文件路径\nlocalizedFile=\"${SRCROOT}/${PROJECT_NAME}/LocalizedUtils.swift\"\n# 把等号后面的值替换成等号前的值, 为代码添加注释\nawk '{print \"/// \"$3\"*\" \"\\n\" $1,$2,$1\";\"}' \"${localizableFile}\" > \"${localizableFile}.tmp\"\n# 将localizable.strings中的文本转为swift格式的常量，存入一个临时文件\nsed \"s/^\\\"/    static var /g\" \"${localizableFile}.tmp\" | sed \"s/\\\" = \\\"/: String { return \\\"/g\" | sed \"s/;$/.localized }/g\" > \"${localizedFile}.tmp\"\n# 先将localized作为计算属性输出到目标文件\necho \"import Foundation\\n\\nextension String {\\n    var localized: String { return NSLocalizedString(self, comment: self) }\" > \"${localizedFile}\"\n# 再将临时文件中的常量增量输出到目标文件\ncat \"${localizedFile}.tmp\" >> \"${localizedFile}\"\n# 最后添加输出一个\"}\"到目标文件，完成输出\necho \"\\n}\" >> \"${localizedFile}\"\n# 删除临时文件\nrm \"${localizableFile}.tmp\"\nrm \"${localizedFile}.tmp\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		497CD8A622F5368F00B695E5 /* Sources */ = {
@@ -137,6 +169,7 @@
 			files = (
 				497CD8B022F5368F00B695E5 /* ViewController.swift in Sources */,
 				497CD8AE22F5368F00B695E5 /* AppDelegate.swift in Sources */,
+				49AB5D0722F53C8500A84EDA /* LocalizedUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +180,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				497CD8B222F5368F00B695E5 /* Base */,
+				49AB5D0222F5378100A84EDA /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -155,8 +189,19 @@
 			isa = PBXVariantGroup;
 			children = (
 				497CD8B722F5369000B695E5 /* Base */,
+				49AB5D0322F5378100A84EDA /* zh-Hans */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		49AB5D0122F5376800A84EDA /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				49AB5D0022F5376800A84EDA /* en */,
+				49AB5D0422F5378100A84EDA /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			path = ../../../../../System/Volumes/Data/Users/zhixing/Desktop/Localizable/Localizable;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -166,6 +211,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -227,6 +273,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
